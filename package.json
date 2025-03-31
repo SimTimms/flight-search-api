@@ -1,0 +1,43 @@
+{
+  "name": "flight-search-api",
+  "version": "0.0.1",
+  "description": "An API for calculating CO2 emissions for each passenger on a flight.",
+  "main": "index.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SimTimms/flight-search-api.git"
+  },
+  "author": "Tim Simms",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SimTimms/flight-search-api/issues"
+  },
+  "homepage": "https://github.com/SimTimms/flight-search-api#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.14",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.23.0",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "npm": "^11.2.0",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@graphql-tools/schema": "^10.0.23",
+    "cors": "^2.8.5",
+    "express-graphql": "^0.12.0",
+    "express-validator": "^7.2.1",
+    "graphql": "^15.10.1",
+    "graphql-tools": "^9.0.18",
+    "mongoose": "^8.13.1"
+  }
+}
