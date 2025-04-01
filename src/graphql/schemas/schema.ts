@@ -30,6 +30,8 @@ const schema = buildSchema(`
         arrivalDateTime: String!
         airline:Airline
         price: Float!
+        departureCity: City
+        arrivalCity: City
     }
 
     input FlightInput {
@@ -38,6 +40,8 @@ const schema = buildSchema(`
         arrivalDateTime: String!
         price: Float!
         airline:ID!
+        departureCity:ID!
+        arrivalCity:ID!
     }
     
     input AirlineInput {
@@ -53,11 +57,22 @@ const schema = buildSchema(`
         cityName: String!
     }
 
+    input FlightFilterInput {
+        flightNumber: String
+        departureCity: ID
+        arrivalCity: ID
+        departureDateTime: String # ISO 8601 format
+        arrivalDateTime: String # ISO 8601 format
+        airline: ID
+        price: Float
+    }
+
     type Query{
         getAirlines:[Airline!]!
         getFlight(flightNumber:String!):Flight
         getFlights:[Flight!]!
         getCities:[City!]!
+        filterFlights(filter:FlightFilterInput):[Flight!]!
     }
 
 

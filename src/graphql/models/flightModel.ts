@@ -22,6 +22,16 @@ const flightSchema = new Schema({
     type: Number,
     required: true,
   },
+  departureCity: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "City",
+  },
+  arrivalCity: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "City",
+  },
 });
 
 const Flight = mongoose.model("Flight", flightSchema);

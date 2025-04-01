@@ -1,8 +1,9 @@
-import { FlightType } from "../../../types";
+import { FlightType, FlightFilterInput } from "../../../types";
 import {
   createFlightService,
   getFlightService,
   getFlightsService,
+  filterFlightsService,
 } from "./services";
 import hasMutationPermission from "../../utils/hasMutationPermission";
 
@@ -19,6 +20,13 @@ const flightResolvers = {
     return await getFlightsService(20);
   },
 
+  filterFlights: async ({
+    filter,
+  }: {
+    filter: FlightFilterInput;
+  }): Promise<FlightType[] | null> => {
+    return await filterFlightsService(filter, 20);
+  },
   createFlight: async ({
     input,
   }: {

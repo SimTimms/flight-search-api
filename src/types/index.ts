@@ -21,6 +21,16 @@ export type CityType = {
   coordinates: GeoJSONInput;
 };
 
+export type FlightFilterInput = {
+  flightNumber: string;
+  departureDateTime: string; // ISO 8601 format
+  arrivalDateTime: string; // ISO 8601 format
+  departureCity: string;
+  arrivalCity: string;
+  airline: ObjectId;
+  price: number;
+};
+
 export type FlightType = {
   _id: ObjectId;
   flightNumber: string;
