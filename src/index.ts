@@ -1,56 +1,29 @@
-import express, { Express, Request, Response } from "express";
-import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./database/connection";
-import { graphqlHTTP } from "express-graphql";
-import schema from "./graphql/schemas/schema";
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 import resolvers from "./graphql/resolvers/resolvers";
+import typeDefs from "./graphql/schemas/typeDefs";
 
 dotenv.config();
+const startServer = async (): Promise<void> => {
+  try {
+    // Connect to the database
+    await connectDB();
+    const PORT = process.env.PORT || 4000;
 
-const port = process.env.PORT || 3000;
+    const server = new ApolloServer({ typeDefs, resolvers });
 
-connectDB();
+    const { url } = await startStandaloneServer(server, {
+      context: async ({ req }) => ({ token: req.headers.token }),
+      listen: { port: Number(PORT) },
+    });
+    console.log(`Server ready at ${url}`);
 
-const app: Express = express();
+    // Start Server
+  } catch (error) {
+    console.error("Failed to start the server:", error);
+  }
+};
 
-// ================
-// SETUP
-// ================
-
-app.use(express.json());
-app.use(cors());
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: resolvers,
-    graphiql: process.env.ENABLE_GRAPHIQL === "true",
-  })
-);
-
-// ================
-// 404 - Not Found
-// ================
-
-app.use((_: Request, res: Response) => {
-  res.status(404).json({ message: "This route does not exist" });
-});
-
-// ================
-// 500 - ERROR HANDLER
-// ================
-
-app.use((err: Error, _: Request, res: Response) => {
-  res
-    .status(500)
-    .json({ message: "Internal server error", error: err.message });
-});
-
-// ================
-// START SERVER
-// ================
-
-app.listen(port, () => {
-  console.log(`Server is running on port:${port}`);
-});
+startServer();
