@@ -4,17 +4,30 @@ import {
   getFlightService,
   getFlightsService,
 } from "./services";
+import hasMutationPermission from "../../utils/hasMutationPermission";
+
 const flightResolvers = {
-  getFlight: async ({ flightNumber }: { flightNumber: string }) => {
-    getFlightService(flightNumber);
+  getFlight: async ({
+    flightNumber,
+  }: {
+    flightNumber: string;
+  }): Promise<FlightType | null> => {
+    return await getFlightService(flightNumber);
   },
 
-  getFlights: async () => {
-    getFlightsService(20);
+  getFlights: async (): Promise<FlightType[] | null> => {
+    return await getFlightsService(20);
   },
 
-  createFlight: async ({ input }: { input: FlightType }) => {
-    createFlightService(input);
+  createFlight: async ({
+    input,
+  }: {
+    input: FlightType;
+  }): Promise<FlightType> => {
+    if (!hasMutationPermission()) {
+      throw new Error("You do not have permission to perform this action.");
+    }
+    return await createFlightService(input);
   },
 };
 
