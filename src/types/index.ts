@@ -21,21 +21,36 @@ export type CityType = {
   coordinates: GeoJSONInput;
 };
 
-export type FlightFilterInput = {
+export type FlightFilter = {
   flightNumber: string;
-  departureDateTime: string; // ISO 8601 format
-  arrivalDateTime: string; // ISO 8601 format
-  departureCity: string;
-  arrivalCity: string;
+  departureDateTime: Date; // ISO 8601 format
+  arrivalDateTime: Date; // ISO 8601 format
+  departureCity: ObjectId;
+  arrivalCity: ObjectId;
   airline: ObjectId;
   price: number;
+  numberOfPassengers: number;
+};
+
+export type FlightInput = {
+  flightNumber: string;
+  departureDateTime: Date; // ISO 8601 format
+  arrivalDateTime: Date; // ISO 8601 format
+  departureCity: ObjectId;
+  arrivalCity: ObjectId;
+  airline: ObjectId;
+  price: number;
+  numberOfPassengers: number;
 };
 
 export type FlightType = {
   _id: ObjectId;
   flightNumber: string;
-  departureDateTime: string;
-  arrivalDateTime: string;
+  departureDateTime: Date;
+  arrivalDateTime: Date;
   airline: ObjectId;
   price: number;
+  distance: number;
+  departureCity: ObjectId;
+  arrivalCity: ObjectId;
 };

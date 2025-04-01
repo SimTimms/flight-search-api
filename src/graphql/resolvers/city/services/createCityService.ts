@@ -11,7 +11,8 @@ async function createCityService(input: CityType): Promise<CityType | null> {
     }
     if (!cityExists) {
       const cityCoordinates: GeoJSONInput = await getCityCoordinates(
-        input.cityName
+        input.cityName,
+        process.env.GOOGLE_MAPS_API_KEY as string
       );
       const newCity = new City({
         cityName: input.cityName,

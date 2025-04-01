@@ -1,4 +1,4 @@
-import { FlightType, FlightFilterInput } from "../../../types";
+import { FlightType, FlightFilter } from "../../../types";
 import {
   createFlightService,
   getFlightService,
@@ -6,8 +6,10 @@ import {
   filterFlightsService,
 } from "./services";
 import hasMutationPermission from "../../utils/hasMutationPermission";
+import DateTimeScalar from "../../scalars/dateTimeScalar";
 
 const flightResolvers = {
+  DateTime: DateTimeScalar,
   getFlight: async ({
     flightNumber,
   }: {
@@ -17,20 +19,21 @@ const flightResolvers = {
   },
 
   getFlights: async (): Promise<FlightType[] | null> => {
-    return await getFlightsService(20);
+    return await getFlightsService(40);
   },
 
   filterFlights: async ({
     filter,
   }: {
-    filter: FlightFilterInput;
+    filter: FlightFilter;
   }): Promise<FlightType[] | null> => {
-    return await filterFlightsService(filter, 20);
+    return await filterFlightsService(filter, 60);
   },
+
   createFlight: async ({
     input,
   }: {
-    input: FlightType;
+    input: FlightFilter;
   }): Promise<FlightType> => {
     if (!hasMutationPermission()) {
       throw new Error("You do not have permission to perform this action.");

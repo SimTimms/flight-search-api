@@ -6,11 +6,11 @@ const flightSchema = new Schema({
     required: true,
   },
   departureDateTime: {
-    type: String,
+    type: Date,
     required: true,
   },
   arrivalDateTime: {
-    type: String,
+    type: Date,
     required: true,
   },
   airline: {
@@ -31,6 +31,20 @@ const flightSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
     ref: "City",
+  },
+  distance: {
+    type: Number,
+    required: true,
+  },
+  co2Emission: {
+    type: Number,
+    required: true,
+  },
+  totalCo2Emission: {
+    type: Number,
+  },
+  numberOfPassengers: {
+    type: Number,
   },
 });
 

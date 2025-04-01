@@ -1,7 +1,12 @@
-import { FlightType, FlightFilterInput } from "../../../../types";
+import { FlightType, FlightFilter } from "../../../../types";
 import Flight from "../../../models/flightModel";
 import errorHandler from "../../../../utils/errorHandler";
-
+import buildConditionalQuery from "../../../../utils/buildConditionalQuery";
+import throttledLimit from "../../../utils/throttledLimit";
+import {
+  validateFlightFilter,
+  validateTotalCo2Emission,
+} from "../../../validators/flightValidators";
 /**
  * Retrieves a list of flights based on the provided filter criteria.
  *
@@ -14,28 +19,56 @@ import errorHandler from "../../../../utils/errorHandler";
  * @throws An error if the query fails, with the error handled by the `errorHandler` function.
  */
 
-async function flightService(
-  filter: FlightFilterInput,
+async function filterFlightsService(
+  filter: FlightFilter,
   limit?: number
 ): Promise<FlightType[] | null> {
   try {
+    // Validate filter input
+    validateFlightFilter(filter);
+
     //Construct a conditional query based on the filter object
-    const conditionalQuery: { [key: string]: any } = Object.fromEntries(
-      Object.entries(filter).filter(
-        ([_, value]) => value !== undefined && value != null
-      )
+    // Exclude fields that require non-standard handling
+    const excludeFields = [
+      "numberOfPassengers",
+      "departureDateTime",
+      "arrivalDateTime",
+    ];
+    const conditionalQuery: { [key: string]: any } = buildConditionalQuery(
+      filter,
+      excludeFields
     );
 
-    const flights = await Flight.find(conditionalQuery)
-      .limit(limit || 10)
+    const filteredQueryByDateTime = {
+      ...conditionalQuery,
+      departureDateTime: {
+        $gte: new Date(filter.departureDateTime),
+        $lte: new Date(filter.arrivalDateTime),
+      },
+    };
+
+    const DEFAULT_LIMIT = 50;
+    const flights = await Flight.find(filteredQueryByDateTime)
+      .limit(throttledLimit(limit, DEFAULT_LIMIT))
       .populate("airline")
       .populate("departureCity")
       .populate("arrivalCity");
 
-    return flights;
+    //Calculate the total CO2 emission for each flight based on the number of passengers
+    const enrichedFlights = flights.map((flight) => {
+      return {
+        ...flight.toObject(),
+        totalCo2Emission: validateTotalCo2Emission(
+          flight.co2Emission * filter.numberOfPassengers
+        ),
+        numberOfPassengers: filter.numberOfPassengers,
+      };
+    });
+
+    return enrichedFlights;
   } catch (error) {
     throw new Error(errorHandler(error));
   }
 }
 
-export default flightService;
+export default filterFlightsService;

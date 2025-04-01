@@ -13,6 +13,4 @@ const citySchema = new mongoose.Schema({
   coordinates: { type: GeoJSONSchema, required: true },
 });
 
-citySchema.index({ coordinates: "2dsphere" });
-
 export default mongoose.model("City", citySchema);

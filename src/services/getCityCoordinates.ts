@@ -1,32 +1,28 @@
 import { GeoJSONInput } from "../types/index";
 import axios from "axios";
 
-// ================
-// ERROR HANDLER
-// ================
 enum ErrorMessages {
   CITY_NAME_REQUIRED = "City name is required.",
   GOOGLE_API_KEY_NOT_DEFINED = "GOOGLE_API_KEY is not defined in environment variables.",
 }
 
-const errorHandler = (error: ErrorMessages) => {
-  throw new Error(error);
-};
-
 // ================
 // GET CITY COORDINATES
 // ================
 
-async function getCityCoordinates(cityName: string): Promise<GeoJSONInput> {
+async function getCityCoordinates(
+  cityName: string,
+  apiKey: string
+): Promise<GeoJSONInput> {
   if (!cityName) {
-    errorHandler(ErrorMessages.CITY_NAME_REQUIRED);
+    throw new Error(ErrorMessages.CITY_NAME_REQUIRED);
   }
   if (!process.env.GOOGLE_API_KEY) {
-    errorHandler(ErrorMessages.GOOGLE_API_KEY_NOT_DEFINED);
+    throw new Error(ErrorMessages.GOOGLE_API_KEY_NOT_DEFINED);
   }
 
   const cityCoordinates = await axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}&key=${process.env.GOOGLE_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}&key=${apiKey}`
   );
 
   const structuredCoordinates: GeoJSONInput = {

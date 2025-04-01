@@ -1,7 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import routes from "./routes/index";
 import connectDB from "./database/connection";
 import { graphqlHTTP } from "express-graphql";
 import schema from "./graphql/schemas/schema";
@@ -29,12 +28,6 @@ app.use(
     graphiql: process.env.ENABLE_GRAPHIQL === "true",
   })
 );
-
-// ================
-// ROUTES
-// ================
-
-app.use("/", routes);
 
 // ================
 // 404 - Not Found
