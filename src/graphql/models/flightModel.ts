@@ -6,15 +6,16 @@ const flightSchema = new Schema({
     required: true,
   },
   departureDateTime: {
-    type: Date,
+    type: String,
     required: true,
   },
   arrivalDateTime: {
-    type: Date,
+    type: String,
     required: true,
   },
   airline: {
     type: Schema.Types.ObjectId,
+    required: true,
     ref: "Airline",
   },
   price: {

@@ -1,13 +1,31 @@
+import { ObjectId } from "mongodb";
+
+export type GeoJSONInput = {
+  type: string;
+  coordinates: number[];
+};
+
+export type CityInput = {
+  cityName: string;
+  coordinates: GeoJSONInput;
+};
+
 export type AirlineType = {
-  _id: string;
+  _id: ObjectId;
   airlineName: string;
 };
 
+export type CityType = {
+  _id: ObjectId;
+  cityName: string;
+  coordinates: GeoJSONInput;
+};
+
 export type FlightType = {
-  _id: string;
+  _id: ObjectId;
   flightNumber: string;
   departureDateTime: string;
   arrivalDateTime: string;
-  airline: AirlineType;
+  airline: ObjectId;
   price: number;
 };

@@ -1,29 +1,23 @@
-import Airline from "../../models/airlineModel";
 import { AirlineType } from "../../../types";
-
-const errorHandler = (error: unknown) => {
-  return `Error fetching flight:${error instanceof Error ? error.message : "Unknown error"}`;
-};
+import hasMutationPermission from "../../utils/hasMutationPermission";
+import { createAirlineService, getAirlineService } from "./services";
 
 const airlineResolvers = {
-  getAirlines: async () => {
-    try {
-      const airlines = await Airline.find().limit(10);
-
-      return airlines;
-    } catch (error) {
-      throw new Error(errorHandler(error));
-    }
+  getAirlines: async (): Promise<AirlineType[]> => {
+    return getAirlineService(20);
   },
 
-  createAirline: async ({ input }: { input: AirlineType }) => {
-    try {
-      const newAirline = new Airline(input);
-      const savedAirline = await newAirline.save();
-      return savedAirline;
-    } catch (error) {
-      throw new Error(errorHandler(error));
+  createAirline: async ({
+    input,
+  }: {
+    input: AirlineType;
+  }): Promise<AirlineType> => {
+    // Check if the user has permission to perform the mutation
+    if (!hasMutationPermission) {
+      throw new Error("You do not have permission to perform this action.");
     }
+
+    return createAirlineService(input);
   },
 };
 

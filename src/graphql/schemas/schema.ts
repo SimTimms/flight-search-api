@@ -1,6 +1,22 @@
 import { buildSchema } from "graphql";
+
+const mutations = `
+    createFlight(input:FlightInput!):Flight
+    updateFlight(input:FlightInput!):Flight
+    createAirline(input:AirlineInput!):Flight
+    createCity(input:CityInput!):City
+`;
 const schema = buildSchema(`
- 
+    type GeoJSON{
+        type: String!
+        coordinates: [Float!]!
+    }
+
+    type City{
+        _id: ID!
+        cityName: String!
+        coordinates: GeoJSON!
+    }
 
     type Airline {
         _id: ID!
@@ -27,11 +43,21 @@ const schema = buildSchema(`
     input AirlineInput {
        airlineName: String!
     }
+       
+    input GeoJSONInput {
+        type: String!
+        coordinates: [Float!]!
+    }
+         
+    input CityInput {
+        cityName: String!
+    }
 
     type Query{
         getAirlines:[Airline!]!
         getFlight(flightNumber:String!):Flight
         getFlights:[Flight!]!
+        getCities:[City!]!
     }
 
 
@@ -39,6 +65,7 @@ const schema = buildSchema(`
         createFlight(input:FlightInput!):Flight
         updateFlight(input:FlightInput!):Flight
         createAirline(input:AirlineInput!):Flight
+        createCity(input:CityInput!):City
     }
 `);
 
