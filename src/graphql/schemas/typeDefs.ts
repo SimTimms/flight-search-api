@@ -1,18 +1,32 @@
 const typeDefs = `#graphql
-  
+############################
+### SCALARS
+############################
+
+    scalar DateTime
+
+############################
+### GEO SCHEMA
+############################
+
     input GeoJSONInput {
         type: String!
         coordinates: [Float!]!
     }
-         
-    input CityInput {
-        cityName: String!
-    }
-
+   
     type GeoJSON{
         type: String!
         coordinates: [Float!]!
     }
+
+############################
+### CITY SCHEMA
+############################
+
+    input CityInput {
+        cityName: String!
+    }
+
 
     type City{
         _id: ID!
@@ -36,15 +50,15 @@ const typeDefs = `#graphql
 ############################
 ### FLIGHT SCHEMA
 ############################
-    scalar DateTime
+
 
     type Flight {
        _id: ID!
-        flightNumber: String!
-        departureDateTime: DateTime!
-        arrivalDateTime: DateTime!
+        flightNumber: String
+        departureDateTime: DateTime # ISO 8601 format
+        arrivalDateTime: DateTime # ISO 8601 format
         airline:Airline
-        price: Float!
+        price: Float
         departureCity: City
         arrivalCity: City
         distance: Float
@@ -56,8 +70,8 @@ const typeDefs = `#graphql
 
     input FlightInput {
         flightNumber: String!
-        departureDateTime: DateTime!
-        arrivalDateTime: DateTime!
+        departureDateTime: DateTime! # ISO 8601 format
+        arrivalDateTime: DateTime! # ISO 8601 format
         price: Float!
         airline:ID!
         departureCity:ID!
@@ -83,11 +97,11 @@ const typeDefs = `#graphql
 ############################
 
     type Query{
-        getAirlines:[Airline!]!
+        getAirlines:[Airline]
         getFlight(flightNumber:String!):Flight
-        getFlights:[Flight!]!
-        getCities:[City!]!
-        filterFlights(filter:FlightFilter):[Flight!]!
+        getFlights:[Flight]
+        getCities:[City]
+        filterFlights(filter:FlightFilter):[Flight]
     }
 
 ############################
@@ -96,7 +110,7 @@ const typeDefs = `#graphql
 
     type Mutation{
         createFlight(input:FlightInput!):Flight
-        createAirline(input:AirlineInput!):Flight
+        createAirline(input:AirlineInput!):Airline
         createCity(input:CityInput!):City
     }
 `;

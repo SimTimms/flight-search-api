@@ -3,8 +3,11 @@ import { CityType, GeoJSONInput } from "../../../../types";
 import errorHandler from "../../../../utils/errorHandler";
 import getCityCoordinates from "../../../../services/getCityCoordinates";
 import checkCityExists from "../../../../services/checkCityExists";
+import { validateCityName } from "../../../validators";
+
 async function createCityService(input: CityType): Promise<CityType | null> {
   try {
+    validateCityName(input.cityName);
     const cityExists = await checkCityExists(input.cityName);
     if (cityExists) {
       throw new Error("City already exists");

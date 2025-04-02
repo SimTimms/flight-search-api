@@ -20,11 +20,9 @@
   "homepage": "https://github.com/SimTimms/flight-search-api#readme",
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.1",
     "@types/node": "^22.13.16",
     "dotenv": "^16.4.7",
     "eslint": "^9.23.0",
-    "express": "^4.21.2",
     "nodemon": "^3.1.9",
     "npm": "^11.2.0",
     "prettier": "^3.5.3",
@@ -38,7 +36,7 @@
     "cors": "^2.8.5",
     "express-validator": "^7.2.1",
     "graphql": "^16.10.0",
-    "ioredis": "^5.6.0",
-    "mongoose": "^8.13.1"
+    "mongoose": "^8.13.1",
+    "redis": "^4.7.0"
   }
 }

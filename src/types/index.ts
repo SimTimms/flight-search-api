@@ -45,12 +45,14 @@ export type FlightInput = {
 
 export type FlightType = {
   _id: ObjectId;
-  flightNumber: string;
-  departureDateTime: Date;
-  arrivalDateTime: Date;
-  airline: ObjectId;
-  price: number;
-  distance: number;
-  departureCity: ObjectId;
-  arrivalCity: ObjectId;
+  flightNumber?: string | null | undefined;
+  departureDateTime?: Date | null | undefined;
+  arrivalDateTime?: Date | null | undefined;
+  airline?: ObjectId | null | undefined;
+  price?: number | null | undefined;
+  distance?: number | null | undefined;
+  departureCity?: ObjectId | null | undefined;
+  arrivalCity?: ObjectId | null | undefined;
+  co2Emission?: number | null | undefined;
+  totalCo2Emission?: number | null | undefined;
 };

@@ -1,11 +1,29 @@
-import airlineResolvers from "./airline/airlineResolvers";
-import flightResolvers from "./flight/flightResolvers";
-import cityResolvers from "./city/cityResolvers";
+import {
+  airlineResolversQuery,
+  airlineResolversMutation,
+} from "./airline/airlineResolvers";
+import {
+  flightResolversQuery,
+  flightResolversMutation,
+  DateTimeScalar,
+} from "./flight/flightResolvers";
+import {
+  cityResolversQuery,
+  cityResolversMutation,
+} from "./city/cityResolvers";
 
 const resolvers = {
-  ...airlineResolvers,
-  ...flightResolvers,
-  ...cityResolvers,
+  Query: {
+    ...airlineResolversQuery,
+    ...flightResolversQuery,
+    ...cityResolversQuery,
+  },
+  Mutation: {
+    ...airlineResolversMutation,
+    ...flightResolversMutation,
+    ...cityResolversMutation,
+  },
+  DateTime: DateTimeScalar, // Add your custom scalar resolvers here if needed
 };
 
 export default resolvers;

@@ -1,6 +1,6 @@
 import Airline from "../../../models/airlineModel";
-import errorHandler from "../../../../utils/errorHandler";
 import { AirlineType } from "../../../../types";
+import { getCachedData, setCachedData } from "../../../../redis/helpers";
 
 /**
  * Service function to fetch a list of airlines from the database.
@@ -9,12 +9,26 @@ import { AirlineType } from "../../../../types";
  * @returns {Promise<AirlineType[]>} - A promise that resolves to an array of airline objects.
  * @throws {Error} - Throws an error if the database query fails.
  */
+
+const DEFAULT_LIMIT = 10; // Default limit for the number of airlines to fetch
+const CACHE_EXPIRATION = 3600; // Cache expiration time in seconds (1 hour)
+
 async function getAirlineService(limit?: number): Promise<AirlineType[]> {
   try {
-    const airlines = await Airline.find().limit(limit || 10);
+    const cacheKey = `getAirlineService:${JSON.stringify(limit)}`;
+
+    const cachedData = await getCachedData(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+    const airlines = await Airline.find().limit(limit || DEFAULT_LIMIT);
+
+    await setCachedData(cacheKey, JSON.stringify(airlines), CACHE_EXPIRATION);
+
     return airlines;
   } catch (error) {
-    throw new Error(errorHandler(error));
+    console.error("Error getting airline:", error);
+    throw error;
   }
 }
 

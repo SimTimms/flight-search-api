@@ -6,7 +6,9 @@ import throttledLimit from "../../../utils/throttledLimit";
 import {
   validateFlightFilter,
   validateTotalCo2Emission,
-} from "../../../validators/flightValidators";
+} from "../../../validators";
+import { getCachedData, setCachedData } from "../../../../redis/helpers";
+
 /**
  * Retrieves a list of flights based on the provided filter criteria.
  *
@@ -19,6 +21,9 @@ import {
  * @throws An error if the query fails, with the error handled by the `errorHandler` function.
  */
 
+const DEFAULT_LIMIT = 40; // Default limit for the number of airlines to fetch
+const CACHE_EXPIRATION = 3600; // Cache expiration time in seconds (1 hour)
+
 async function filterFlightsService(
   filter: FlightFilter,
   limit?: number
@@ -26,7 +31,6 @@ async function filterFlightsService(
   try {
     // Validate filter input
     validateFlightFilter(filter);
-
     //Construct a conditional query based on the filter object
     // Exclude fields that require non-standard handling
     const excludeFields = [
@@ -38,7 +42,6 @@ async function filterFlightsService(
       filter,
       excludeFields
     );
-
     const filteredQueryByDateTime = {
       ...conditionalQuery,
       departureDateTime: {
@@ -46,8 +49,13 @@ async function filterFlightsService(
         $lte: new Date(filter.arrivalDateTime),
       },
     };
+    const cacheKey = `filterFlightsService:${JSON.stringify(filteredQueryByDateTime)}`;
 
-    const DEFAULT_LIMIT = 50;
+    const cachedData = await getCachedData(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+
     const flights = await Flight.find(filteredQueryByDateTime)
       .limit(throttledLimit(limit, DEFAULT_LIMIT))
       .populate("airline")
@@ -59,11 +67,18 @@ async function filterFlightsService(
       return {
         ...flight.toObject(),
         totalCo2Emission: validateTotalCo2Emission(
-          flight.co2Emission * filter.numberOfPassengers
+          flight.co2Emission,
+          filter.numberOfPassengers
         ),
         numberOfPassengers: filter.numberOfPassengers,
       };
     });
+
+    await setCachedData(
+      cacheKey,
+      JSON.stringify(enrichedFlights),
+      CACHE_EXPIRATION
+    );
 
     return enrichedFlights;
   } catch (error) {

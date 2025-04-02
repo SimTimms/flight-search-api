@@ -1,7 +1,5 @@
 import Airline from "../../../models/airlineModel";
-import errorHandler from "../../../../utils/errorHandler";
 import { AirlineType } from "../../../../types";
-
 /**
  * Service function to create a new airline.
  * @param input - The airline data to be created.
@@ -14,8 +12,9 @@ async function createAirlineService(input: AirlineType): Promise<AirlineType> {
     const newAirline = new Airline(input);
     const savedAirline = await newAirline.save();
     return savedAirline;
-  } catch (error) {
-    throw new Error(errorHandler(error));
+  } catch (error: unknown) {
+    console.error("Error creating airline:", error);
+    throw error;
   }
 }
 
