@@ -50,21 +50,15 @@ Follow the steps below to set up and run the API locally:
 
 3. **Set Environment Variables**
 
-- **`MONGO_URI`**  
-  The MongoDB connection URI for your database.
+Create a .env file in the root directory or set the environment variables on your host instance.
 
-- **`ENABLE_GRAPHIQL`**  
-  A flag to enable or disable GraphiQL, the in-browser IDE for exploring GraphQL APIs.
-
-- **`GOOGLE_API_KEY`**  
-  The Google API key used for accessing Google services (e.g., Maps API).
-
-- **`ENABLE_DB_WRITE`**  
-  A flag to enable or disable writing to the database.  
-  This can be useful for creating test data in development environments while disabling database functions in production.
-
-- **`REDIS_URI`**  
-  The URI for connecting to the Redis instance.
+```
+MONGO_URI = "CONNECT_URI" #The MongoDB connection URI for your database.
+ENABLE_GRAPHIQL = "TRUE" # A flag to enable or disable GraphiQL, the in-browser IDE for exploring GraphQL APIs.
+GOOGLE_API_KEY = "API_KEY" #The Google API key used for accessing Google services (e.g., Maps API).
+ENABLE_DB_WRITE = "TRUE" #A flag to enable or disable writing to the database.  This can be useful for creating test data in development environments while disabling database functions in production.
+REDIS_URI = "CONNECT_URI" #The URI for connecting to the Redis instance.
+```
 
 4. **Run the Application**
    ```bash
