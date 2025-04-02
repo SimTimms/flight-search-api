@@ -151,4 +151,4 @@ The API incorporates error handling, ensuring meaningful error messages are deli
 
 ### **Caching**
 
-Redis is used to cache expensive operations and improve performance.
+Redis is used to cache read operations and improve performance.

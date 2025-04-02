@@ -49,10 +49,14 @@ async function filterFlightsService(
         $lte: new Date(filter.arrivalDateTime),
       },
     };
+
     const cacheKey = `filterFlightsService:${JSON.stringify(filteredQueryByDateTime)}`;
+    console.log("Filter:", cacheKey);
 
     const cachedData = await getCachedData(cacheKey);
     if (cachedData) {
+      console.log("Filter:", JSON.parse(cachedData));
+
       return JSON.parse(cachedData);
     }
 
@@ -61,6 +65,7 @@ async function filterFlightsService(
       .populate("airline")
       .populate("departureCity")
       .populate("arrivalCity");
+    console.log("Filter:", flights);
 
     //Calculate the total CO2 emission for each flight based on the number of passengers
     const enrichedFlights = flights.map((flight) => {

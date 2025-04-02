@@ -6,10 +6,22 @@ const DateTimeScalar = new GraphQLScalarType({
   name: "DateTime",
   description: "ISO 8601-compliant date-time string",
   serialize(value: Date) {
-    if (!(value instanceof Date)) {
-      throw new TypeError("Value is not an instance of Date");
+    // Validate if the value is a valid Date instance
+    if (value instanceof Date && !isNaN(value.getTime())) {
+      return value.toISOString(); // Return ISO string if valid
     }
-    return value.toISOString(); // Converts Date to ISO string
+
+    // Attempt to parse a string or number into a valid Date
+    if (typeof value === "string" || typeof value === "number") {
+      const parsedDate = new Date(value);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate.toISOString(); // Convert and return as ISO string
+      }
+    }
+
+    // Handle invalid Date values
+    console.warn("Invalid Date value:", value);
+    return null; // Return null instead of throwing an error
   },
   parseValue(value: Date) {
     const date = new Date(value);
