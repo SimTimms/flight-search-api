@@ -16,21 +16,6 @@ The Flight Search API enables users to search and filter flights and return the 
 
 ---
 
-## **Technologies**
-
-- **Node.js**: Backend runtime for handling API requests.
-- **MongoDB**: NoSQL database for managing flights, cities, and airline data. Chosen for it's flexibility and rapid development and it's suitability to iterative design changes. The relational model is not complex and is suited to MongoDBs embedded JSON structure.
-- **Redis**: In-memory data store for caching and reducing database load.
-- **GraphQL**: Query language for API interaction, enabling flexible and efficient data requests.
-- **TypeScript**: Ensures type safety and better maintainability of the code.
-
-## **Removed Technologies**
-
-- **Express**: Initially created as a RESTful API - Express has been removed in favour of creating a GraphQL API.
-- **Geospatial Queries**: Initially the Database was designed to handle Geospatial queries however this was deemed unecessary and woud have constituted a huge overhead. The distance calculation is now computed in the createFlight resolver. Similarly the CO2 emission calculations are computed in this resolver.
-
----
-
 ## **Installation**
 
 Follow the steps below to set up and run the API locally:
