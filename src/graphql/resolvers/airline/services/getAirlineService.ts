@@ -16,11 +16,11 @@ const CACHE_EXPIRATION = 3600; // Cache expiration time in seconds (1 hour)
 async function getAirlineService(limit?: number): Promise<AirlineType[]> {
   try {
     const cacheKey = `getAirlineService:${JSON.stringify(limit)}`;
-
     const cachedData = await getCachedData(cacheKey);
     if (cachedData) {
       return JSON.parse(cachedData);
     }
+
     const airlines = await Airline.find().limit(limit || DEFAULT_LIMIT);
 
     await setCachedData(cacheKey, JSON.stringify(airlines), CACHE_EXPIRATION);

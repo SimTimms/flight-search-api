@@ -1,4 +1,4 @@
-/**
+/** AI GENERATED CODE - REVIEWED BY TIM SIMMS
  * Calculates the great-circle distance between two points on the Earth's surface
  * using the Haversine formula. The distance is returned in kilometers.
  *
