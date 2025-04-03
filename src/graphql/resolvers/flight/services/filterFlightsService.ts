@@ -50,7 +50,7 @@ async function filterFlightsService(
       },
     };
 
-    const cacheKey = `filterFlightsService:${JSON.stringify(filteredQueryByDateTime)}`;
+    const cacheKey = `filterFlightsService:${JSON.stringify(filteredQueryByDateTime)}:${filter.numberOfPassengers}`;
     console.log("Filter:", cacheKey);
 
     const cachedData = await getCachedData(cacheKey);
@@ -69,6 +69,7 @@ async function filterFlightsService(
 
     //Calculate the total CO2 emission for each flight based on the number of passengers
     const enrichedFlights = flights.map((flight) => {
+      console.log("Flight:", flight);
       return {
         ...flight.toObject(),
         totalCo2Emission: validateTotalCo2Emission(
