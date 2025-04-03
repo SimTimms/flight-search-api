@@ -40,7 +40,7 @@ The API and the UI are written to separate repositories. This separation adds a 
 
 - **City Collection**: Each document represents a city and includes fields like cityName and Coordinates.
 - **Airline Collection**: Each document represents and airline.
-- **Flight Collection**: Each document reprsents a single flight between 2 points and stores data about the flight. Additionally, the documents reference the Airline and City collections via MongoIDs to create relationships.
+- **Flight Collection**: Each document represents a single flight between 2 points and stores data about the flight. Additionally, the documents reference the Airline and City collections via MongoIDs to create relationships.
 
 ### **Design Considerations**
 
